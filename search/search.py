@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -72,6 +72,23 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
+def constructPath(problem, node):
+    n = node
+    path = []
+    while n != problem.getStartState():
+        path.insert(0, n[1][1])
+        n = n[0]
+    return path
+
+def getListOfAncestors(problem, node):
+    n = node
+    ancestors = []
+
+    while n != problem.getStartState():
+        ancestors.insert(0, n[0][1])
+        n = n[0]
+    return ancestors
+
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
@@ -86,8 +103,31 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    print "Start:", problem.getStartState()
+    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    print "Start's successors:", problem.getSuccessors(problem.getStartState())
+    stack = util.Stack()
+    stack.push(1);
+    print "stack pops item: ", stack.pop()
+    print "kombawawa", problem.isGoalState(problem.getSuccessors(problem.getStartState())[0][0])
+
+    openStack = util.Stack()
+    startState = problem.getStartState()
+    openStack.push(startState)
+
+    while not openStack.isEmpty():
+        node = openStack.pop()
+        if node == problem.getStartState():
+            state = node
+        else:
+            state = node[1][0]
+        if problem.isGoalState(state):
+            return constructPath(problem, node)
+        successors = problem.getSuccessors(state)
+        for successor in successors:
+            if not successor in getListOfAncestors(problem, node):
+                openStack.push([node, successor])
+    return False
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
