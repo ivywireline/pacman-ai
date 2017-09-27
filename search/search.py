@@ -116,7 +116,7 @@ def depthFirstSearch(problem):
     stack.push(1);
     print "stack pops item: ", stack.pop()
     print "kombawawa", problem.isGoalState(problem.getSuccessors(problem.getStartState())[0][0])
-
+    print "Problem is: ", problem
     openStack = util.Stack()
     startState = problem.getStartState()
     openStack.push(startState)
