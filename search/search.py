@@ -78,6 +78,7 @@ def constructPath(problem, node):
     while n != problem.getStartState():
         path.insert(0, n[1][1])
         n = n[0]
+    print 'path is: ', path
     return path
 
 def getListOfAncestors(problem, node):
@@ -85,7 +86,12 @@ def getListOfAncestors(problem, node):
     ancestors = []
 
     while n != problem.getStartState():
-        ancestors.insert(0, n[0][1])
+        print "startState is", problem.getStartState()
+        print "n is: ", n
+        if n[0] == problem.getStartState():
+            ancestors.insert(0, n[0])
+        else:
+            ancestors.insert(0, n[0][1][0])
         n = n[0]
     return ancestors
 
@@ -125,7 +131,9 @@ def depthFirstSearch(problem):
             return constructPath(problem, node)
         successors = problem.getSuccessors(state)
         for successor in successors:
-            if not successor in getListOfAncestors(problem, node):
+            if not successor[0] in getListOfAncestors(problem, node):
+                print "successors are: ", successor
+                print "ancestors are: ", getListOfAncestors(problem, node)
                 openStack.push([node, successor])
     return False
 
