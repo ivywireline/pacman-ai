@@ -105,20 +105,11 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    stack = util.Stack()
-    stack.push(1);
-    print "stack pops item: ", stack.pop()
-    print "kombawawa", problem.isGoalState(problem.getSuccessors(problem.getStartState())[0][0])
-    print "Problem is: ", problem
     openStack = util.Stack()
     startState = problem.getStartState()
     openStack.push(startState)
 
     while not openStack.isEmpty():
-        print 'openStack is: ', openStack.list
         node = openStack.pop()
         if node == problem.getStartState():
             state = node
