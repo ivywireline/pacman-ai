@@ -131,6 +131,7 @@ def breadthFirstSearch(problem):
     seenDict = { startState: 0 }
     while not openQueue.isEmpty():
         node = openQueue.pop()
+        print node
         if node == problem.getStartState():
             state = node
         else:
@@ -179,7 +180,6 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     startState = problem.getStartState()
-    print "startState heuristic is: ", heuristic(startState, problem)
     openPriorityQueue = util.PriorityQueue()
     startState = problem.getStartState()
     openPriorityQueue.push(startState, 0)
