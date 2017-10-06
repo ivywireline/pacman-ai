@@ -131,7 +131,6 @@ def breadthFirstSearch(problem):
     seenDict = { startState: 0 }
     while not openQueue.isEmpty():
         node = openQueue.pop()
-        print node
         if node == problem.getStartState():
             state = node
         else:

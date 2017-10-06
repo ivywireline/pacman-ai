@@ -361,6 +361,32 @@ def findClosestCorner(position, corners):
             closestCornerHeuristic = cornerHeuristic
     return (closestCorner, closestCornerHeuristic)
 
+def isDirectPathBlocked(slope, position, food, walls):
+    for wall in walls:
+        if wall[1] == ( slope * (wall[0] - position[0]) ) + position[1]:
+            if food[0] > wall[0] and food[1] > wall[1]:
+                return True
+    return False
+
+def findClosestFood(position, foodLst):
+    closestFood = foodLst[0]
+    closestFoodHeuristic = abs(position[0] - closestFood[0]) + abs(position[1] - closestFood[1])
+    for food in foodLst:
+        foodHeuristic = abs(position[0] - food[0]) + abs(position[1] - food[1])
+        if foodHeuristic < closestFoodHeuristic:
+            closestFood = food
+            closestFoodHeuristic = foodHeuristic
+    return (closestFood, closestFoodHeuristic)
+
+def findFarthestFood(position, foodLst):
+    farthestFood = foodLst[0]
+    farthestFoodHeuristic = abs(position[0] - farthestFood[0]) + abs(position[1] - farthestFood[1])
+    for food in foodLst:
+        foodHeuristic = abs(position[0] - food[0]) + abs(position[1] - food[1])
+        if foodHeuristic > farthestFoodHeuristic:
+            farthestFood = food
+            farthestFoodHeuristic = foodHeuristic
+    return (farthestFood, farthestFoodHeuristic)
 
 def cornersHeuristic(state, problem):
     """
@@ -480,8 +506,18 @@ def foodHeuristic(state, problem):
 
     """
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
-    return 0
+    lstFoodPositions = foodGrid.asList()
+
+    walls = problem.walls.asList() # These are the walls of the maze, as a Grid (game.py)
+    if state[1].count() == 0:
+        return 0
+    if len(lstFoodPositions) == 1:
+        return abs(lstFoodPositions[0][0] - position[0]) + abs(lstFoodPositions[0][1] - position[1])
+    # Compute the heuristic of the path that visists all the remaining corners
+    lastVisitedPosition, result = findClosestFood(position, lstFoodPositions)
+    initialFarthestPosition, farHeuristic = findFarthestFood(lastVisitedPosition, lstFoodPositions)
+    result = result + farHeuristic
+    return result
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -512,7 +548,8 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return search.ucs(problem)
+
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -548,7 +585,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return state in self.food.asList()
 
 def mazeDistance(point1, point2, gameState):
     """
