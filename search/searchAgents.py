@@ -511,8 +511,6 @@ def foodHeuristic(state, problem):
     walls = problem.walls.asList() # These are the walls of the maze, as a Grid (game.py)
     if state[1].count() == 0:
         return 0
-    if len(lstFoodPositions) == 1:
-        return abs(lstFoodPositions[0][0] - position[0]) + abs(lstFoodPositions[0][1] - position[1])
     # Compute the heuristic of the path that visists all the remaining corners
     lastVisitedPosition, result = findClosestFood(position, lstFoodPositions)
     initialFarthestPosition, farHeuristic = findFarthestFood(lastVisitedPosition, lstFoodPositions)
